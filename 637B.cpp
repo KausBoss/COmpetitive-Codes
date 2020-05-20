@@ -24,49 +24,22 @@ int main(){
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 	#endif
-	ll n, m;
-	cin>>n>>m;
-	vector<ll> a(n);
-	vector<ll> freq(m+1, 0);
-	for(int i=0; i<n; i++){
-		cin>>a[i];
-		if(a[i] <= m){
-			freq[a[i]]++;
-		}
-	}
-	priority_queue<pair<ll,ll> , vector<pair<ll,ll>>, greater<pair<ll,ll>>> p;
+	int n;
+	string s;
+	cin>>n;
+	map<int, string> itos;
+	map<string, int> stoi;
 
-	for(int i=1; i<=m; i++){
-		p.push({freq[i], i});
+	for(int i=1; i<=n; i++){
+		cin>>s;
+		if(stoi.count(s)){
+			itos.erase(stoi[s]);
+			stoi.erase(s);
+		}
+		stoi[s]=-i;
+		itos[-i]=s;
 	}
-	int change=0;
-	int avg = ceil((float)n/m);
-	int lb = floor((float)n/m);
-
-	for(int i=0; i<n; i++){
-		if(p.top().fi >= lb){
-			break;
-		}
-		if(a[i]>m){
-			change++;
-			pair<ll, ll> temp=p.top();
-			p.pop();
-			a[i]=temp.si;
-			freq[temp.si]++;
-			p.push({temp.fi+1, temp.si});
-		}
-		else if(freq[a[i]] > avg){
-			P(freq, m);
-			freq[a[i]]--;
-			change++;
-			pair<ll, ll> temp=p.top();
-			p.pop();
-			a[i]=temp.si;
-			freq[temp.si]++;
-			p.push({temp.fi+1, temp.si});
-		}
+	for(auto x:itos){
+		cout<<x.si<<endl;
 	}
-	P(freq, m);
-	cout<<p.top().fi<<" "<<change<<endl;
-	P(a, n);
 }

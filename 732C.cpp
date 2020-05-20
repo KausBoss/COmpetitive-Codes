@@ -26,6 +26,7 @@ int main(){
 	#endif
 	ll n, m;
 	cin>>n>>m;
+	int sntch=0;
 	vector<ll> a(n);
 	vector<ll> freq(m+1, 0);
 	for(int i=0; i<n; i++){
@@ -35,18 +36,22 @@ int main(){
 		}
 	}
 	priority_queue<pair<ll,ll> , vector<pair<ll,ll>>, greater<pair<ll,ll>>> p;
-
-	for(int i=1; i<=m; i++){
-		p.push({freq[i], i});
-	}
+	//priority_queue<pair<ll,ll>> p;
 	int change=0;
 	int avg = ceil((float)n/m);
 	int lb = floor((float)n/m);
+	for(int i=1; i<=m; i++){
+		p.push({freq[i], i});
+		// if(freq[i] == avg){
+		// 	sntch++;
+		// }
+	}
+
+	//P(freq, m);
 
 	for(int i=0; i<n; i++){
-		if(p.top().fi >= lb){
-			break;
-		}
+		//P(freq, m);
+		if(p.top().fi >= lb){ break;}
 		if(a[i]>m){
 			change++;
 			pair<ll, ll> temp=p.top();
@@ -55,18 +60,25 @@ int main(){
 			freq[temp.si]++;
 			p.push({temp.fi+1, temp.si});
 		}
-		else if(freq[a[i]] > avg){
+	}
+	//int cnt = n%m;
+	cout<<avg<<" "<<lb<<endl;
+	for(int i=0; i<n; i++){
+		if(freq[a[i]] >= avg && p.top().fi <= lb){
 			P(freq, m);
-			freq[a[i]]--;
+			cout<<p.top().si<<"__"<<endl;
+			if(freq[a[i]] == avg && p.top().fi == lb){ break;}
 			change++;
+			freq[a[i]]--;
 			pair<ll, ll> temp=p.top();
 			p.pop();
 			a[i]=temp.si;
-			freq[temp.si]++;
+			freq[a[i]]++;
 			p.push({temp.fi+1, temp.si});
 		}
 	}
-	P(freq, m);
+	
+
 	cout<<p.top().fi<<" "<<change<<endl;
 	P(a, n);
 }
