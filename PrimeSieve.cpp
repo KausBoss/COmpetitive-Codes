@@ -26,22 +26,22 @@ vector<ll> prime;
 
 void PrimeSieve(ll n){
 	vector<bool> Pr(n+1, 1);
-
 	for(ll i=3; i*i<=n; i+=2){//not checking for 2 as we know all even no. are not prime
-		if(Pr[i]=1){
+		if(Pr[i]){
 			for(ll j=3; i*j<=n; j+=2){
 				Pr[i*j]=0;
 			}
 		}
 	}
-	prime.push_back(2); 
+	prime.pb(2); 
 	//cout<<2<<" ";//doing manually for 2
 	for(ll i=3; i<=n; i+=2){
 		if(Pr[i]){
 			//cout<<i<<endl;
-			prime.push_back(i);
+			prime.pb(i);
 		}
 	}
+	return;
 }
 //segment Sieve
 //when |b-a| <= 10^6, but b and a are very large
@@ -52,12 +52,13 @@ void PrimeSieve(ll n){
 void SegmentSieve(ll a, ll b){
 	vector<bool> op((b-a)+1, 1); // index mapped array, intially we assume all numbers are prime
 
-	PrimeSieve(1000);
+	PrimeSieve(sqrt(b));
 
-	for(ll i=0; prime[i]*prime[i] <=b; i++){
+	for(ll i=0; (prime[i]*prime[i])<=b &&(i<prime.size()); i++){
 		ll n= prime[i];
 		ll start =(a/n)*n;
 		if(start < a){start += n;}
+
 		for(ll j=start; j<=b; j+= n){
 			op[j-a] = 0;
 		}
@@ -77,9 +78,7 @@ int main(){
     freopen("output.txt", "w", stdout);
 	#endif
 	//PrimeSieve(1000);
-	ll a= 10731;
-	ll b=823173;
-	cout<<a<<" "<<b<<endl;
-	cout<<sqrtl(b)<<endl;
+	ll a= 131;
+	ll b=8273;
     SegmentSieve(a, b);
 }

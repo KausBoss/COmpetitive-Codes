@@ -1,72 +1,44 @@
 #include <bits/stdc++.h>
 
-using namespace std;
-#define ll long long int
-#define mp make_pair
-#define pb push_back
-#define fi first
-#define si second
-#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL);
-#define F(a,n) for(int i=0;i<n;i++){cin>>a[i];}
-#define F1(a,n) for(int i=1;i<=n;i++){cin>>a[i];}
-#define P(a,n) for(int i=0;i<n;i++){cout<<a[i]<<' ';}cout<<endl;
-#define P1(a,n) for(int i=1;i<=n;i++){cout<<a[i]<<' ';}cout<<endl;
-#define NF(a,n,m) for(int i=0;i<n;i++){for(int j=0;j<m;j++){cin>>a[i][j];}}
-#define NF1(a,n,m) for(int i=1;i<=n;i++){for(int j=1;j<=m;j++){cin>>a[i][j];}}
-#define PNF(a,n,m) for(int i=0;i<n;i++){for(int j=0;j<m;j++){cout<<a[i][j]<<' ';}cout<<endl;}cout<<endl;
-#define PNF1(a,n,m) for(int i=1;i<=n;i++){for(int j=1;j<=m;j++){cout<<a[i][j]<<' ';}cout<<endl;}cout<<endl;
-const int nax = 1e4+5;
-const int mod = 1e9+7;
+#define forn(i, n) for (int i = 0; i < int(n); i++)
 
-int main(){
-	fastIO
+using namespace std;
+
+const int N = 100 * 1000 + 13;
+const long long INF64 = 1e18;
+
+int n;
+string s;
+int a[N];
+long long dp[N][5];
+
+const string h = "hard";
+
+int main() {
 	#ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 	#endif
-	ll n, m;
-	cin>>n>>m;
-	vector<ll> a(n);
-	vector<ll> freq(m+1, 0);
-	for(int i=0; i<n; i++){
-		cin>>a[i];
-		if(a[i] <= m){
-			freq[a[i]]++;
-		}
-	}
-	priority_queue<pair<ll,ll> , vector<pair<ll,ll>>, greater<pair<ll,ll>>> p;
+	scanf("%d", &n);
+	static char buf[N];
+	scanf("%s", buf);
+	s = buf;
+	forn(i, n)
+		scanf("%d", &a[i]);
+	
+	forn(i, N) forn(j, 5) dp[i][j] = 1e2;
+	dp[0][0] = 0;
 
-	for(int i=1; i<=m; i++){
-		p.push({freq[i], i});
+	forn(i, n) forn(j, 4){
+		dp[i + 1][j + (s[i] == h[j])] = min(dp[i + 1][j + (s[i] == h[j])], dp[i][j]);
+		dp[i + 1][j] = min(dp[i + 1][j], dp[i][j] + a[i]);
 	}
-	int change=0;
-	int avg = ceil((float)n/m);
-	int lb = floor((float)n/m);
-
 	for(int i=0; i<n; i++){
-		if(p.top().fi >= lb){
-			break;
+		for(int j=0; j<4; j++){
+			cout<<dp[i][j]<<" ";
 		}
-		if(a[i]>m){
-			change++;
-			pair<ll, ll> temp=p.top();
-			p.pop();
-			a[i]=temp.si;
-			freq[temp.si]++;
-			p.push({temp.fi+1, temp.si});
-		}
-		else if(freq[a[i]] > avg){
-			P(freq, m);
-			freq[a[i]]--;
-			change++;
-			pair<ll, ll> temp=p.top();
-			p.pop();
-			a[i]=temp.si;
-			freq[temp.si]++;
-			p.push({temp.fi+1, temp.si});
-		}
+		cout<<endl;
 	}
-	P(freq, m);
-	cout<<p.top().fi<<" "<<change<<endl;
-	P(a, n);
+	cout<<dp[n-1][0];
+	return 0;
 }
