@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-#define ll long long int
+#define ll long long 			
 #define mp make_pair
 #define pb push_back
 #define fi first
@@ -15,30 +15,24 @@ using namespace std;
 #define NF1(a,n,m) for(int i=1;i<=n;i++){for(int j=1;j<=m;j++){cin>>a[i][j];}}
 #define PNF(a,n,m) for(int i=0;i<n;i++){for(int j=0;j<m;j++){cout<<a[i][j]<<' ';}cout<<endl;}cout<<endl;
 #define PNF1(a,n,m) for(int i=1;i<=n;i++){for(int j=1;j<=m;j++){cout<<a[i][j]<<' ';}cout<<endl;}cout<<endl;
-const int nax = 1e4+5;
+const int nax = 1e6+5;
 const int mod = 1e9+7;
 
-ll fact(ll n); 
-  
-ll nCr(ll n, ll r) 
-{ 
-    return fact(n) / (fact(r) * fact(n - r)); 
-} 
-
-
-ll fact(ll n) 
-{ 
-    ll res = 1; 
-    for (ll i = 2; i <= n; i++) 
-        res = res * i; 
-    return res; 
-} 
+ll dp[nax];
 
 ll catalan(ll n){
-	return nCr(2*n, n)/(n+1);
-
+	//base case
+	if(n == 0 || n== 1){
+		return 1;
+	}
+	//recursive case
+	if(dp[n]!=-1){ return dp[n];}
+	ll ans=0;
+	for(ll i=1; i<=n; i++){
+		ans += catalan(i-1)*catalan(n-i);
+	}
+	return dp[n] = ans;
 }
-
 int main(){
 	fastIO
 	#ifndef ONLINE_JUDGE
@@ -47,6 +41,7 @@ int main(){
 	#endif
 	ll n;
 	cin>>n;
+	memset(dp, -1, sizeof(dp));
 	for(ll i=0; i<n; i++){
 		cout<<catalan(i)<<endl;
 	}	
