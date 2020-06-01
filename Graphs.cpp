@@ -224,6 +224,45 @@ public:
 	}
 };
 
+template<typename T>
+class Graph3{
+	map<T, list<T>> m;
+public:
+	void AddEdge(T x, T y){
+		m[x].pb(y);
+		//m[y].pb(x);
+	}
+
+	void dfs_helper(T src, map<T, bool> &visited){
+		//recursive function
+		cout<<src<<" ";
+		visited[src] = true; // marking the current node as visited
+		//go to all neighbour of that node
+		for(T nbr: m[src]){
+			if(!visited[nbr]){
+				dfs_helper(nbr, visited);
+			}
+		}
+	}
+
+	void ComponentDFS(){
+		map<T, bool> visited;
+		for(auto node:m){
+			visited[node.fi]=false;
+		}
+		//calling the helper fucntion
+		int cnt=1;
+		for(auto node:m){
+			if(!visited[node.fi]){
+				cout<<"Component "<<cnt<<" -> ";
+				dfs_helper(node.fi, visited);
+				cout<<endl;
+			}
+		}
+
+	}
+};
+
 int main(){
 	fastIO
 	#ifndef ONLINE_JUDGE
@@ -231,21 +270,21 @@ int main(){
     freopen("output.txt", "w", stdout);
 	#endif
 
-    Graph<int> g;
-	g.AddEdge(0, 1);
-	g.AddEdge(1, 2);
-	g.AddEdge(2, 3);
-	g.AddEdge(0, 3);
-	g.AddEdge(0, 4);
+ 	// Graph<int> g;
+	// g.AddEdge(0, 1);
+	// g.AddEdge(1, 2);
+	// g.AddEdge(2, 3);
+	// g.AddEdge(0, 3);
+	// g.AddEdge(0, 4);
 
-	g.AddEdge(5, 6);
-	g.AddEdge(6, 7);
+	// g.AddEdge(5, 6);
+	// g.AddEdge(6, 7);
 
-	g.AddEdge(8, 9);
-	g.AddEdge(9, 10);
+	// g.AddEdge(8, 9);
+	// g.AddEdge(9, 10);
 
-	g.AddEdge(11, 12);
-	g.ComponentDFS();
+	// g.AddEdge(11, 12);
+	// g.ComponentDFS();
 
 	//Graph<int> g;
 	// g.AddEdge(1, 2);
