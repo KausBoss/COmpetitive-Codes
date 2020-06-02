@@ -47,6 +47,7 @@ public:
 		if(parent[a] == a){
 			return a;
 		}
+		//also known as path compression
 		return parent[a] = get(parent[a]); //get(parent[a]); -> this will get me the root node
 	}
 
