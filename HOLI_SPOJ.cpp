@@ -44,6 +44,7 @@ public:
 			if(!visited[child.fi]){
 				//counting all nodes on the side of the current node in cnt[node] using dfs
 				cnt[node] += dfs(child.fi, visited, cnt, ans);
+				//NOTE: the eadge we are considering is the one btw node and child 
 				ll right = cnt[child.fi];
 				// the other side will have n- right number of nodes
 				ll left = n - right;

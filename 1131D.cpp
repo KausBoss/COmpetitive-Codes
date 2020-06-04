@@ -18,6 +18,38 @@ using namespace std;
 const int nax = 1e4+5;
 const int mod = 1e9+7;
 
+class dsu{
+	vector<ll> parent,rank;
+	ll totalComponents;
+public:
+	dsu(ll n){
+		parent.resize(n);
+		rank.resize(n);
+		for(ll i = 0 ; i < n ; i++)
+			parent[i] = i,rank[i] = 0;
+		totalComponents = n;
+	}
+
+	ll get(ll a){
+		if(a == parent[a])
+			return a;
+		return parent[a] = get(parent[a]); 
+	}
+
+	void union_set(ll a,ll b){
+		a = get(a);
+		b = get(b); 
+		if(a != b){
+			if(rank[a]<rank[b])
+				swap(a,b);
+			parent[b] = a;
+			if(rank[a] == rank[b]) 
+				rank[a]++;
+			totalComponents--;
+		}
+	}
+};
+
 int main(){
 	fastIO
 	#ifndef ONLINE_JUDGE

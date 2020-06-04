@@ -1,2 +1,4 @@
-Case #1: 18
-Case #2: 62
+A to C 6
+A to D 3
+A to B 1
+A to A 0
