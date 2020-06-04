@@ -1,4 +1,4 @@
-A to C 6
-A to D 3
-A to B 1
-A to A 0
+Distance from A to C is 6
+Distance from A to D is 3
+Distance from A to B is 1
+Distance from A to A is 0
