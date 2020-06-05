@@ -1,5 +1,5 @@
 /*
-Dijkstra's Algorithm 
+Bellman Ford Algorithm
 */
 #include <bits/stdc++.h>
 
@@ -23,44 +23,50 @@ const int mod = 1e9+7;
 
 template<typename T>
 class graph{
-	unordered_map<T, list<pair<T,ll>>> m;
+	ll v;//number of vertices
+	unordered_map<T, list<pair<T, ll>>> m;
 public:
-	void addEdge(T a, T b, ll cost){
-		m[a].pb({b, cost});
-		m[b].pb({a, cost});
+	graph(ll V){
+		this->v = V;
 	}
-	void Dijkstra(T src){
-		unordered_map<T, ll> dist;//maintains the min dist for each node
+	void addEdge(T a, T b, ll cost, bool bidir=false){
+		m[a].pb({b, cost});
+		if(bidir){
+			m[b].pb({a, cost});
+		}
+	}
 
-		for(auto x:m){ dist[x.fi]=INT_MAX;}// initializing with maxx
+	void Bellman(T src){
+		unordered_map<T, ll> dist;
 
-		set<pair<ll, T>> s;// to store min weighted node is ascending order
-		s.insert({0, src});//inserting src with dist 0
+		for(ll i=0; i<v; i++){
+			dist[i] = INT_MAX;// initializing all vertices to inf
+		}
 		dist[src]=0;
 
-		while(!s.empty()){
-			auto p = *s.begin();//smallest weighed node
-			s.erase(p);
-			T node = p.si;
-			ll nodeWeight = p.fi;
-
-			//iterating over children of smallest weighed node and
-			//relaxing them if possible
-			for(auto child:m[node]){
-				if(dist[child.fi] > nodeWeight + child.si){
-					//checking if this node is already present in set
-					auto ptr = s.find({dist[child.fi], child.fi});
-					if(ptr != s.end()){
-						s.erase(ptr);
+		//repeating relaxation for v-1 times
+		for(ll i=0; i<v-1; i++){
+			for(auto node:m){
+				for(auto child:node.si){
+					if(dist[node.fi]!= INT_MAX && (dist[child.fi] > dist[node.fi] + child.si) ){
+						dist[child.fi] = dist[node.fi] + child.si;
 					}
-					dist[child.fi] = nodeWeight + child.si;
-					//updating into set
-					s.insert({dist[child.fi], child.fi});
 				}
 			}
 		}
+		//after relaxing vetrices v-1 times, we check for nnegative cycle
+		//by relaxing one more time
 		for(auto node:m){
-			cout<<"Distance from "<<src<<" to "<<node.fi<<" is "<<dist[node.fi]<<endl;
+			for(auto child:node.si){
+				if(dist[node.fi]!= INT_MAX && (dist[child.fi] > dist[node.fi] + child.si) ){
+					cout<<"Negative Cycle exists\n";
+					return;
+				}
+			}
+		}
+
+		for(auto x:dist){
+			cout<<"distance from "<<src+1<<" to "<<x.fi+1<<" is "<<x.si<<endl;
 		}
 
 	}
@@ -72,14 +78,17 @@ int main(){
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 	#endif
-	ll m;
+	ll vertex;
+	cin>>vertex;
+	graph<int> g(vertex);
+	ll m; //number of edges
 	cin>>m;
-	graph<char> g;
-	for(int i=0; i<m; i++){
-		char u, v;
-		ll w;
+	for(ll i=0; i<m; i++){
+		ll u, v, w;
 		cin>>u>>v>>w;
+		u--; v--;
 		g.addEdge(u, v, w);
 	}
-	g.Dijkstra('A');
+
+	g.Bellman(0);
 }

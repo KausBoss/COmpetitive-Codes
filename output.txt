@@ -1,4 +1,6 @@
-Distance from A to C is 6
-Distance from A to D is 3
-Distance from A to B is 1
-Distance from A to A is 0
+Case 1:
+The shortest distance from 0 to 1 is 1.
+The shortest distance from 0 to 2 is 2.
+The shortest distance from 0 to 3 is 3.
+The shortest distance from 1 to 2 is 1.
+Not possible to go from 3 to 1.
