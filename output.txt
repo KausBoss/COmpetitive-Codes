@@ -1,6 +1,1 @@
-Case 1:
-The shortest distance from 0 to 1 is 1.
-The shortest distance from 0 to 2 is 2.
-The shortest distance from 0 to 3 is 3.
-The shortest distance from 1 to 2 is 1.
-Not possible to go from 3 to 1.
+10
